@@ -15,13 +15,14 @@ def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@router.get("", response_model=list[UserOut], dependencies=[Depends(require_admin)])
+@router.get("", response_model=list[UserOut])
 def list_users(
     skip: int = 0,
     limit: int = 100,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    """List all users. **Admin only.**"""
+    """List all users. **Authenticated only.**"""
     return user_crud.get_all_users(db, skip=skip, limit=limit)
 
 

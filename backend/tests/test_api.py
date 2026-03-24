@@ -250,12 +250,10 @@ class TestUsers:
         assert resp.status_code == 200
         assert resp.json()["email"] == "alice@example.com"
 
-    def test_list_users_admin_only(self):
+    def test_list_users_authenticated(self):
         resp = client.get("/api/users", headers=self.alice_headers)
-        assert resp.status_code == 403
-        resp = client.get("/api/users", headers=self.admin_headers)
         assert resp.status_code == 200
-        assert len(resp.json()) == 2
+        assert len(resp.json()) >= 2
 
     def test_change_role(self):
         # Get alice's id

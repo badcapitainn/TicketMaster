@@ -71,16 +71,14 @@ export default function TicketDetail() {
         description: ticketData.description
       });
       
-      // If admin, load users to resolve names (or we just show IDs for now)
-      if (user?.role === "admin") {
-        try {
-          const allUsers = await fetchApi("/users");
-          const mapping: Record<number, string> = {};
-          allUsers.forEach((u: any) => mapping[u.id] = u.username);
-          setUsersInfo(mapping);
-        } catch {
-          // Ignore if admin list fails
-        }
+      // Load users to resolve names for comments and history
+      try {
+        const allUsers = await fetchApi("/users");
+        const mapping: Record<number, string> = {};
+        allUsers.forEach((u: any) => mapping[u.id] = u.username);
+        setUsersInfo(mapping);
+      } catch {
+        // Ignore if user list fails
       }
     } catch (err: any) {
       setError(err.message || "Failed to load ticket");
