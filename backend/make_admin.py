@@ -6,7 +6,7 @@ from app.models.comment import Comment
 from app.models.ticket_history import TicketHistory
 from app.config import settings
 
-engine = create_engine(settings.database_url)
+engine = create_engine(settings.get_valid_database_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def promote_to_admin(email: str):

@@ -11,6 +11,13 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
 
+    @property
+    def get_valid_database_url(self) -> str:
+        # SQLAlchemy 1.4+ removed support for the 'postgres://' scheme
+        if self.database_url.startswith("postgres://"):
+            return self.database_url.replace("postgres://", "postgresql://", 1)
+        return self.database_url
+
 
 @lru_cache()
 def get_settings() -> Settings:
